@@ -119,8 +119,8 @@ export function headHtml(r, assets) {
     ${alts.map(([l, rt]) => `<link rel="alternate" hreflang="${HREFLANG[l]}" href="${url(rt)}" />`).join('\n    ')}
     <link rel="alternate" hreflang="x-default" href="${url(xdef[1])}" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#f6f8fc" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0a1f52" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fbfbfc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0f17" media="(prefers-color-scheme: dark)" />
     <meta name="apple-itunes-app" content="app-id=${APP_ID}" />
     <meta property="og:type" content="${r.page === 'home' ? 'website' : 'article'}" />
     <meta property="og:site_name" content="${SITE_NAME}" />

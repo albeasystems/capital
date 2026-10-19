@@ -16,7 +16,7 @@ const tags = (re) => [...built.matchAll(re)].map((m) => m[0]);
 const css = tags(/<link rel="stylesheet"[^>]*>/g);
 const js = tags(/<script type="module"[^>]*><\/script>/g);
 const preload = tags(/<link rel="modulepreload"[^>]*>/g);
-const fonts = fs.readdirSync(path.join(dist, 'assets')).filter((f) => /(archivo-latin-wdth-normal|geist-latin-wght-normal|geist-mono-latin-wght-normal).*\.woff2$/.test(f));
+const fonts = fs.readdirSync(path.join(dist, 'assets')).filter((f) => /(geist-latin-wght-normal).*\.woff2$/.test(f));
 const fontTags = fonts.map((f) => `<link rel="preload" href="${base}assets/${f}" as="font" type="font/woff2" crossorigin />`);
 const assets = [...fontTags, ...css, ...preload, ...js].join('\n    ');
 

@@ -12,8 +12,8 @@ export const calcRoute = (lang, id) => `${lang}/${content[lang].pages[id].slug}/
 export function Logo({ lang }) {
   return (
     <a href={href(`${lang}/`)} className="flex items-center gap-3 no-underline" aria-label="Capital">
-      <img src={href('media/icon-96.png')} width="34" height="34" alt="" style={{ borderRadius: 8 }} />
-      <span className="font-plan text-xl font-bold tracking-tight" style={{ fontVariationSettings: '"wdth" 112' }}>Capital</span>
+      <img src={href('media/icon-96.png')} width="34" height="34" alt="" style={{ borderRadius: 9 }} />
+      <span className="text-xl font-bold tracking-tight">Capital</span>
     </a>
   );
 }
@@ -25,10 +25,10 @@ function LangMenu({ r, ui }) {
       <summary className="flex cursor-pointer items-center gap-2 py-2 text-sm" aria-label={ui.langLabel}>
         <span className="data">{r.lang.toUpperCase()}</span><svg className="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.25 6 8l4-3.75" /></svg>
       </summary>
-      <ul className="absolute end-0 z-30 mt-2 min-w-44 list-none p-2" style={{ background: 'var(--paper)', border: '1.5px solid var(--line)' }}>
+      <ul className="absolute end-0 z-30 mt-2 min-w-44 list-none p-2 shadow-lg" style={{ background: 'var(--paper)', border: '1px solid var(--rule-strong)', borderRadius: 14 }}>
         {langs.map((l) => (
           <li key={l}>
-            <a lang={l} hrefLang={l} href={href(counterpart(r, l))} className="block px-3 py-2 text-sm no-underline hover:underline" aria-current={l === r.lang ? 'true' : undefined}
+            <a lang={l} hrefLang={l} href={href(counterpart(r, l))} className="block rounded-lg px-3 py-2 text-sm no-underline hover:bg-[var(--paper-2)]" aria-current={l === r.lang ? 'true' : undefined}
               style={l === r.lang ? { fontWeight: 650 } : undefined}>{LANG_NAMES[l]}</a>
           </li>
         ))}
@@ -41,7 +41,7 @@ export function Nav({ r, ui }) {
   const home = href(`${r.lang}/`);
   const links = [[ui.nav.calculators, `${home}#calculators`], [ui.nav.app, `${home}#app`], [ui.nav.faq, `${home}#faq`]];
   return (
-    <header style={{ borderBottom: '1px solid var(--hair)' }}>
+    <header style={{ borderBottom: '1px solid var(--rule)' }}>
       <div className="wrap flex items-center justify-between gap-4 py-3">
         <Logo lang={r.lang} />
         <nav aria-label="Principal" className="flex items-center gap-6">
@@ -61,24 +61,24 @@ export function Footer({ r, ui }) {
   const f = ui.footer;
   const legal = LEGAL_LANGS.includes(r.lang) ? r.lang : 'en';
   return (
-    <footer className="mt-auto" style={{ borderTop: '2px solid var(--line)' }}>
+    <footer className="mt-auto" style={{ borderTop: '1px solid var(--rule)', background: 'var(--paper-2)' }}>
       <div className="wrap py-10">
-        <div className="tblock tfoot">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
           <div>
             <Logo lang={r.lang} />
-            <p className="muted mt-3 text-sm">{f.project}</p>
+            <p className="muted mt-4 max-w-xs text-sm">{f.project}</p>
           </div>
           <div className="text-sm"><span className="cell-label">{f.publisher}</span>{PUBLISHER}<br /><a href={`mailto:${CONTACT}`}>{CONTACT}</a></div>
-          <div className="grid gap-1 text-sm"><span className="cell-label">{f.legal}</span>
+          <div className="grid content-start gap-1.5 text-sm"><span className="cell-label">{f.legal}</span>
             <a href={href(`${legal}/privacy/`)}>{f.privacy}</a>
             <a href={href(`${legal}/terms/`)}>{f.terms}</a>
             <a href={href(`${legal}/support/`)}>{f.support}</a>
           </div>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm"><span className="cell-label col-span-2">{f.languages}</span>
+          <div className="grid grid-cols-2 content-start gap-x-6 gap-y-1.5 text-sm"><span className="cell-label col-span-2">{f.languages}</span>
             {LANGS.filter((l) => content[l]).map((l) => <a key={l} lang={l} hrefLang={l} href={href(counterpart(r, l))}>{LANG_NAMES[l]}</a>)}
           </div>
         </div>
-        <p className="muted mt-8 text-sm measure">{f.disclaimer}</p>
+        <p className="muted mt-10 border-t pt-6 text-sm measure" style={{ borderColor: "var(--rule)" }}>{f.disclaimer}</p>
       </div>
     </footer>
   );

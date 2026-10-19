@@ -256,9 +256,9 @@ export function SystemsLab({ lang, ui }) {
                 <thead><tr><th>{L.system}</th><th>{L.firstPayment}</th><th>{L.lastPayment}</th><th>{L.interest}</th></tr></thead>
                 <tbody>{runs.map(({ s, r }) => (
                   <tr key={s}>
-                    <td style={{ fontFamily: 'var(--font-text)' }}>{ui.chart[s]}</td>
+                    <td style={{}}>{ui.chart[s]}</td>
                     <td>{m(r.payment)}</td><td>{m(r.lastPayment)}</td>
-                    <td style={r.totalInterest === cheapest ? { fontWeight: 650 } : undefined}>{m(r.totalInterest)}</td>
+                    <td style={r.totalInterest === cheapest ? { fontWeight: 650, color: 'var(--line)' } : undefined}>{m(r.totalInterest)}</td>
                   </tr>))}</tbody>
               </table>
             </div>
@@ -317,10 +317,10 @@ export function CompareLab({ lang, ui }) {
           <table className="tbl">
             <thead><tr><th /><th>{C.a}</th><th>{C.b}</th></tr></thead>
             <tbody>
-              <tr><td style={{ fontFamily: 'var(--font-text)' }}>{C.row.apr}</td><td>{pct(aa, lang)}</td><td>{pct(ab, lang)}</td></tr>
-              <tr><td style={{ fontFamily: 'var(--font-text)' }}>{C.row.payment}</td><td>{m(ra.payment)}</td><td>{m(rb.payment)}</td></tr>
-              <tr><td style={{ fontFamily: 'var(--font-text)' }}>{C.row.interest}</td><td>{m(ra.totalInterest)}</td><td>{m(rb.totalInterest)}</td></tr>
-              <tr><td style={{ fontFamily: 'var(--font-text)' }}>{C.row.outlay}</td><td>{m(ra.totalOutlay)}</td><td>{m(rb.totalOutlay)}</td></tr>
+              <tr><td style={{}}>{C.row.apr}</td><td>{pct(aa, lang)}</td><td>{pct(ab, lang)}</td></tr>
+              <tr><td style={{}}>{C.row.payment}</td><td>{m(ra.payment)}</td><td>{m(rb.payment)}</td></tr>
+              <tr><td style={{}}>{C.row.interest}</td><td>{m(ra.totalInterest)}</td><td>{m(rb.totalInterest)}</td></tr>
+              <tr><td style={{}}>{C.row.outlay}</td><td>{m(ra.totalOutlay)}</td><td>{m(rb.totalOutlay)}</td></tr>
             </tbody>
           </table>
         </div>
@@ -391,12 +391,12 @@ export function PrepayLab({ lang, ui }) {
             <table className="tbl">
               <thead><tr><th /><th>{P.reduceTerm}</th><th>{P.reducePayment}</th></tr></thead>
               <tbody>
-                <tr><td style={{ fontFamily: 'var(--font-text)' }}>{P.newPayment}</td><td>{m(res.reduceTerm.newPayment)}</td><td>{m(res.reducePayment.newPayment)}</td></tr>
-                <tr><td style={{ fontFamily: 'var(--font-text)' }}>{P.newTerm}</td><td>{dur(res.reduceTerm.newPeriods)}</td><td>{dur(res.reducePayment.newPeriods)}</td></tr>
-                <tr><td style={{ fontFamily: 'var(--font-text)' }}>{P.saved}</td>
+                <tr><td style={{}}>{P.newPayment}</td><td>{m(res.reduceTerm.newPayment)}</td><td>{m(res.reducePayment.newPayment)}</td></tr>
+                <tr><td style={{}}>{P.newTerm}</td><td>{dur(res.reduceTerm.newPeriods)}</td><td>{dur(res.reducePayment.newPeriods)}</td></tr>
+                <tr><td style={{}}>{P.saved}</td>
                   <td style={res.reduceTerm.interestSaved >= res.reducePayment.interestSaved ? { color: 'var(--red)', fontWeight: 650 } : undefined}>{m(res.reduceTerm.interestSaved)}</td>
                   <td style={res.reducePayment.interestSaved > res.reduceTerm.interestSaved ? { color: 'var(--red)', fontWeight: 650 } : undefined}>{m(res.reducePayment.interestSaved)}</td></tr>
-                <tr><td style={{ fontFamily: 'var(--font-text)' }}>{P.timeSaved}</td><td>{timeSaved(res.reduceTerm.periodsSaved)}</td><td>{timeSaved(res.reducePayment.periodsSaved)}</td></tr>
+                <tr><td style={{}}>{P.timeSaved}</td><td>{timeSaved(res.reduceTerm.periodsSaved)}</td><td>{timeSaved(res.reducePayment.periodsSaved)}</td></tr>
               </tbody>
             </table>
           </div>

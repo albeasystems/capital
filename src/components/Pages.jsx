@@ -20,18 +20,6 @@ function Stamp({ children, quiet }) {
   return <a href={APP_STORE} className={`stamp ${quiet ? 'stamp-quiet' : ''}`} rel="noopener">{children}</a>;
 }
 
-/** The title block of the sheet. The last cell is the action, so the download stamp is part of the drawing. */
-function TitleBlock({ ui, compact }) {
-  return (
-    <div className={`tblock ${compact ? 'tblock-compact' : ''}`}>
-      {!compact && <div><span className="cell-label">Capital</span><span className="font-plan text-lg font-bold" style={{ fontVariationSettings: '"wdth" 110' }}>{ui.footer.project.split(',')[0]}</span></div>}
-      {!compact && <div><span className="cell-label">{ui.footer.publisher}</span><span>Albea Systems</span></div>}
-      <div><span className="cell-label">iOS</span><span className="data">17+ · iPhone · iPad</span></div>
-      <div className="cell-action"><a href={APP_STORE} className="stamp" rel="noopener">{ui.stamp}</a></div>
-    </div>
-  );
-}
-
 const FaqMark = () => (
   <svg className="faq-mark" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12" /><path className="v" d="M8 2v12" /></svg>
 );
@@ -43,7 +31,7 @@ function Faq({ items, title, id }) {
         <h2 id={`${id}-h`} className="h2 lg:col-span-4">{title}</h2>
         <div className="lg:col-span-8">
           {items.map(([q, a], i) => (
-            <details key={q} className="faq" open={i === 0 ? undefined : undefined} style={{ borderTop: i === 0 ? '2px solid var(--line)' : '1px solid var(--hair)' }}>
+            <details key={q} className="faq" open={i === 0 ? undefined : undefined} style={{ borderTop: '1px solid var(--rule)' }}>
               <summary className="flex items-start justify-between gap-6 py-5">
                 <h3 className="h3 m-0 text-[1.1rem] font-semibold">{q}</h3>
                 <FaqMark />
@@ -85,14 +73,14 @@ export function Home({ r }) {
           <h1 id="h1" className="h1 rise" style={{ fontSize: 'clamp(2.3rem, 5.2vw, 4.75rem)' }}><Headline template={home.h1} tin={tinTxt} tae={taeTxt} /></h1>
           <div className="mt-10 grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-10">
             <div className="lg:col-span-8">
-              <div className="rise grid grid-cols-1 justify-items-start gap-6">
+              <div className="rise grid grid-cols-1 justify-items-start gap-7">
                 <p className="lede measure">{home.lede}</p>
-                <TitleBlock ui={ui} compact />
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-3"><Stamp>{ui.stamp}</Stamp><span className="label">iOS 17+ · iPhone · iPad</span></div>
               </div>
               <figure className="draw-in m-0 mt-10">
                 <p className="label measure mb-3">{home.caption}</p>
                 <div className="relative">
-                  <RateBars detail="A" top={{ label: ui.drawing.tin, value: EXAMPLE.annualRatePct, digits: 0 }} bottom={{ label: ui.drawing.tae, value: example.aprPct }} lang={lang}
+                  <RateBars top={{ label: ui.drawing.tin, value: EXAMPLE.annualRatePct, digits: 0 }} bottom={{ label: ui.drawing.tae, value: example.aprPct }} lang={lang}
                     t={{ aria: tpl(ui.drawing.aria, { tin: tinTxt, tae: taeTxt, gap: pct(example.aprPct - EXAMPLE.annualRatePct, lang, 2) }) }} />
                 </div>
               </figure>
@@ -104,7 +92,7 @@ export function Home({ r }) {
                   <img src={href(`media/capital-${cl}-screen.webp`)} width="590" height="1283" alt={home.app.views[3].alt} fetchPriority="high" />
                 </picture>
               </div>
-              <figcaption className="label mt-3 flex items-center gap-2"><span className="callout" aria-hidden="true">A</span>{home.detailLabel}</figcaption>
+              <figcaption className="label mt-4">{home.detailLabel}</figcaption>
             </figure>
           </div>
         </div>
@@ -141,13 +129,12 @@ export function Home({ r }) {
           <p className="lede mt-4 measure">{home.app.lede}</p>
         </div>
         <ul className="rail mt-12" tabIndex={0} aria-label={home.app.title}>
-          {home.app.views.map((v, i) => (
+          {home.app.views.map((v) => (
             <li key={v.file} className="w-[13.5rem] sm:w-[15rem]">
               <figure className="m-0">
                 <div className="device"><img src={href(`media/views/${cl}/${v.file}.webp`)} width="590" height="1283" loading="lazy" decoding="async" alt={v.alt} /></div>
-                <figcaption className="mt-3 flex items-start gap-3 text-sm">
-                  <span className="callout shrink-0" aria-hidden="true">{i + 1}</span>
-                  <span>{v.caption}{v.file === 'report' && <span className="muted block">{home.app.reportNote}</span>}</span>
+                <figcaption className="mt-4 text-sm">
+                  <span className="font-medium">{v.caption}</span>{v.file === 'report' && <span className="muted block">{home.app.reportNote}</span>}
                 </figcaption>
               </figure>
             </li>
@@ -162,9 +149,9 @@ export function Home({ r }) {
         <div className="wrap">
           <h2 id="plans-h" className="h2 max-w-3xl">{home.plans.title}</h2>
           <p className="lede mt-4 measure">{home.plans.lede}</p>
-          <dl className="m-0 mt-10 grid grid-cols-1 md:grid-cols-3" style={{ border: '1.5px solid var(--line)' }}>
+          <dl className="panel m-0 mt-10 grid grid-cols-1 overflow-hidden md:grid-cols-3">
             {home.plans.rows.map(([k, v], i) => (
-              <div key={k} className={`p-6 ${i ? 'border-t md:border-t-0 md:border-s' : ''}`} style={{ borderColor: 'var(--hair)' }}>
+              <div key={k} className={`p-6 ${i ? 'border-t md:border-t-0 md:border-s' : ''}`} style={{ borderColor: 'var(--rule)' }}>
                 <dt className="h3 mb-3 flex flex-wrap items-center gap-3">{k}</dt>
                 <dd className="m-0 text-[0.9375rem]">{v}</dd>
               </div>
@@ -175,11 +162,15 @@ export function Home({ r }) {
 
       <Faq id="faq" title={home.faq.title} items={home.faq.items} />
 
-      <section className="zone !pb-16" aria-labelledby="close-h">
+      <section className="zone !pb-20" aria-labelledby="close-h">
         <div className="wrap">
-          <h2 id="close-h" className="h1 max-w-[20ch]" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}>{home.close.title}</h2>
-          <p className="muted mb-10 mt-4">{home.close.lede}</p>
-          <TitleBlock ui={ui} />
+          <div className="panel flex flex-col items-start justify-between gap-8 p-8 md:flex-row md:items-center md:p-12" style={{ background: 'var(--paper-2)', borderColor: 'transparent' }}>
+            <div>
+              <h2 id="close-h" className="h1 max-w-[18ch]" style={{ fontSize: 'clamp(2rem, 4.6vw, 3.6rem)' }}>{home.close.title}</h2>
+              <p className="muted mt-4">{home.close.lede}</p>
+            </div>
+            <div className="flex flex-col items-start gap-3"><Stamp>{ui.stamp}</Stamp><span className="label">iOS 17+ · iPhone · iPad</span></div>
+          </div>
         </div>
       </section>
     </Shell>
@@ -195,9 +186,9 @@ export function Index({ lang, title, lede, skip }) {
       <div className="wrap">
         <h2 id="idx-h" className="h2 max-w-3xl">{title}</h2>
         {lede && <p className="lede mt-4 measure">{lede}</p>}
-        <ul className="mt-12 grid list-none gap-x-12 p-0 md:grid-cols-2" style={{ borderTop: '2px solid var(--line)' }}>
+        <ul className="mt-12 grid list-none gap-x-12 p-0 md:grid-cols-2" style={{ borderTop: '1px solid var(--rule)' }}>
           {ids.map((id) => (
-            <li key={id} style={{ borderBottom: '1px solid var(--hair)' }}>
+            <li key={id} style={{ borderBottom: '1px solid var(--rule)' }}>
               <a href={href(calcRoute(lang, id))} className="group block py-5 no-underline">
                 <span className="h3 group-hover:underline">{c.pages[id].short}</span>
                 <span className="muted mt-1 block text-[0.9375rem]">{c.pages[id].blurb}</span>
@@ -205,7 +196,7 @@ export function Index({ lang, title, lede, skip }) {
             </li>
           ))}
           {skip && (
-            <li style={{ borderBottom: '1px solid var(--hair)' }}>
+            <li style={{ borderBottom: '1px solid var(--rule)' }}>
               <a href={APP_STORE} rel="noopener" className="group block py-5 no-underline">
                 <span className="h3 group-hover:underline">{c.ui.stamp}</span>
                 <span className="muted mt-1 block text-[0.9375rem]">{c.ui.cta.text}</span>
@@ -233,9 +224,9 @@ export function CalcPage({ r }) {
             <a href={href(`${r.lang}/`)}>Capital</a> / <a href={href(`${r.lang}/#calculators`)}>{ui.nav.calculators}</a>
           </nav>
           <div className="rise grid grid-cols-1 gap-7">
-            <h1 id="h1" className="h1 max-w-[20ch]" style={{ fontSize: 'clamp(2.1rem, 5.2vw, 4.4rem)' }}>{p.h1}</h1>
+            <h1 id="h1" className="h1 max-w-[20ch]" style={{ fontSize: 'clamp(2.1rem, 5vw, 4.2rem)' }}>{p.h1}</h1>
             <p className="lede max-w-[62ch]" style={{ color: 'var(--ink)' }}>{p.answer}</p>
-            <p className="data text-[0.9375rem]" style={{ color: 'var(--ink-2)' }} dir="ltr">{p.formula}</p>
+            <p className="data rounded-lg px-3 py-2 text-[0.9375rem] inline-block" style={{ color: 'var(--ink-2)', background: 'var(--paper-2)' }} dir="ltr">{p.formula}</p>
           </div>
         </div>
       </section>
