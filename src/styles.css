@@ -1,0 +1,244 @@
+@import "@fontsource-variable/archivo/wdth.css";
+@import "@fontsource-variable/geist/index.css";
+@import "@fontsource-variable/geist-mono/index.css";
+@import "tailwindcss";
+
+/* The page is a heliographic blue-line print: structure in blue ink on cool white paper.
+   In dark mode the same sheet is its cyanotype. One red, used only for the correction (the gap). */
+:root {
+  color-scheme: light dark;
+  --paper: #f6f8fc;
+  --paper-2: #eaeff9;
+  --ink: #0d2b6b;
+  --ink-2: #3a5287;
+  --line: #2269de;
+  --hair: color-mix(in oklab, var(--line) 32%, transparent);
+  --red: #c42b16;
+  --stamp-bg: #2269de;
+  --stamp-fg: #ffffff;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --font-plan: "Archivo Variable", "Geist Variable", system-ui, sans-serif;
+  --font-text: "Geist Variable", system-ui, -apple-system, "Segoe UI", "Noto Sans Arabic", "Noto Sans Devanagari", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-data: "Geist Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0a1f52;
+    --paper-2: #0e2a6b;
+    --ink: #e8eeff;
+    --ink-2: #b4c6f3;
+    --line: #7fa8ff;
+    --red: #ff8a6d;
+    --stamp-bg: #e8eeff;
+    --stamp-fg: #0a1f52;
+  }
+}
+
+@theme inline {
+  --font-plan: var(--font-plan);
+  --font-sans: var(--font-text);
+  --font-mono: var(--font-data);
+}
+
+html { background: var(--paper); scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html[lang="ar"] body { line-height: 1.85; }
+html[lang="hi"] body, html[lang="zh"] body { line-height: 1.8; }
+
+/* the parts of the browser nobody draws, drawn */
+::selection { background: var(--red); color: var(--paper); }
+input, select, textarea, button { caret-color: var(--red); accent-color: var(--line); font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; border-radius: 1px; }
+* { scrollbar-color: var(--line) transparent; scrollbar-width: thin; }
+a { color: inherit; text-underline-offset: 0.22em; text-decoration-thickness: 1px; text-decoration-color: color-mix(in oklab, var(--line) 60%, transparent); }
+a:hover { text-decoration-color: var(--red); }
+.num, .data { font-family: var(--font-data); font-variant-numeric: tabular-nums slashed-zero; letter-spacing: -0.01em; }
+table, input[type="number"] { font-variant-numeric: tabular-nums; }
+@layer base {
+  h1, h2, h3 { margin: 0; }
+  p { margin: 0; }
+}
+h1, h2, h3 { font-family: var(--font-plan); text-wrap: balance; overflow-wrap: break-word; hyphens: manual; }
+html[lang="de"] h1, html[lang="de"] h2, html[lang="de"] h3 { hyphens: auto; }
+p { text-wrap: pretty; overflow-wrap: break-word; }
+
+/* ---------- the sheet ---------- */
+.sheet { margin: 12px; border: 1.5px solid var(--line); min-height: calc(100dvh - 24px); display: flex; flex-direction: column; }
+@media (max-width: 640px) { .sheet { margin: 6px; min-height: calc(100dvh - 12px); } }
+.zone { border-top: 1px solid var(--hair); padding-block: clamp(3rem, 7vw, 6rem); }
+.zone:first-of-type { border-top: 0; }
+.wrap { width: min(100% - 2.5rem, 78rem); margin-inline: auto; }
+@media (max-width: 640px) { .wrap { width: min(100% - 1.5rem, 78rem); } }
+.measure { max-inline-size: 65ch; }
+
+.h1 {
+  font-size: clamp(2.35rem, 6.4vw, 5.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  font-weight: 720;
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+}
+html[lang="ar"] .h1, html[lang="hi"] .h1, html[lang="zh"] .h1 { font-stretch: 100%; font-variation-settings: normal; letter-spacing: 0; line-height: 1.2; font-family: var(--font-text); }
+.h2 { font-size: clamp(1.75rem, 3.6vw, 3rem); line-height: 1.08; letter-spacing: -0.02em; font-weight: 700; font-variation-settings: "wdth" 108; }
+.h3 { font-size: 1.25rem; line-height: 1.25; letter-spacing: -0.01em; font-weight: 650; font-variation-settings: "wdth" 104; }
+html[lang="ar"] .h2, html[lang="hi"] .h2, html[lang="zh"] .h2, html[lang="ar"] .h3, html[lang="hi"] .h3, html[lang="zh"] .h3 { font-variation-settings: normal; letter-spacing: 0; font-family: var(--font-text); }
+.lede { font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.5; color: var(--ink-2); }
+.muted { color: var(--ink-2); }
+
+/* ---------- plan furniture ---------- */
+.rule { border: 0; border-top: 1px solid var(--hair); margin: 0; }
+.rule-2 { border-top: 2px solid var(--line); }
+.label { font-size: 0.875rem; line-height: 1.5; color: var(--ink-2); }
+
+/* the download stamp: a title-block cell that is a button */
+.stamp {
+  display: inline-flex; align-items: center; gap: 0.75rem; white-space: nowrap;
+  background: var(--stamp-bg); color: var(--stamp-fg);
+  padding: 0.85rem 1.25rem; border: 1.5px solid var(--stamp-bg);
+  font-family: var(--font-plan); font-weight: 650; font-size: 1rem; letter-spacing: -0.005em; text-decoration: none;
+  transition: transform 160ms var(--ease-out), background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+.stamp:hover { background: transparent; color: var(--ink); border-color: var(--line); }
+.stamp:active { transform: translateY(1px); }
+.stamp-quiet { background: transparent; color: var(--ink); border-color: var(--line); }
+.stamp-quiet:hover { background: var(--stamp-bg); color: var(--stamp-fg); }
+
+/* data entry: a ruled line, not a box */
+.field { display: grid; gap: 0.35rem; }
+.field > span { font-size: 0.875rem; color: var(--ink-2); line-height: 1.3; }
+.field .input {
+  display: flex; align-items: baseline; gap: 0.5rem; border-bottom: 1.5px solid var(--line); padding-bottom: 0.3rem;
+  transition: border-color 140ms var(--ease-out);
+}
+.field .input:focus-within { border-color: var(--red); }
+.field input, .field select {
+  background: transparent; border: 0; outline: 0; width: 100%; min-width: 0; padding: 0.2rem 0;
+  font-family: var(--font-data); font-size: 1.25rem; font-variant-numeric: tabular-nums slashed-zero; color: var(--ink);
+}
+.field select { appearance: none; -webkit-appearance: none; cursor: pointer; }
+.field select option { background: var(--paper); color: var(--ink); }
+.field .unit { font-family: var(--font-data); font-size: 0.9375rem; color: var(--ink-2); white-space: nowrap; }
+.field input::-webkit-outer-spin-button, .field input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.field input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+.check { display: flex; gap: 0.6rem; align-items: center; font-size: 0.9375rem; cursor: pointer; }
+.check input { width: 1.1rem; height: 1.1rem; }
+
+/* results read like dimension strings: label, leader, figure */
+.dim-row { display: flex; align-items: baseline; gap: 0.75rem; padding-block: 0.55rem; border-bottom: 1px solid var(--hair); }
+.dim-row > .lead { flex: 1; border-bottom: 1px dotted var(--hair); transform: translateY(-0.28em); min-width: 1rem; }
+.dim-row .k { color: var(--ink-2); font-size: 0.9375rem; }
+.dim-row .v { font-family: var(--font-data); font-variant-numeric: tabular-nums slashed-zero; font-size: 1.125rem; font-weight: 520; white-space: nowrap; }
+.dim-row.hot .k { color: var(--ink); }
+.dim-row.hot .v { color: var(--red); font-size: 1.5rem; font-weight: 640; }
+
+.tbl { width: 100%; border-collapse: collapse; font-family: var(--font-data); font-size: 0.875rem; }
+.tbl th { text-align: end; font-weight: 500; color: var(--ink-2); padding: 0.5rem 0.75rem 0.5rem 0; border-bottom: 1.5px solid var(--line); font-family: var(--font-text); font-size: 0.8125rem; }
+.tbl th:first-child, .tbl td:first-child { text-align: start; }
+.tbl td { text-align: end; padding: 0.45rem 0.75rem 0.45rem 0; border-bottom: 1px solid var(--hair); }
+.tbl tr:last-child td { border-bottom: 0; }
+
+details > summary { cursor: pointer; list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+summary { -webkit-tap-highlight-color: transparent; }
+
+/* drawing */
+.draw { width: 100%; height: auto; display: block; overflow: visible; }
+.draw text { font-family: var(--font-data); fill: var(--ink); font-variant-numeric: tabular-nums; }
+.draw .ink { stroke: var(--line); fill: none; stroke-width: 1.25; }
+.draw .fill-line { fill: var(--line); }
+.draw .fill-ink { fill: var(--ink); }
+.draw .hair { stroke: var(--hair); fill: none; stroke-width: 1; }
+.draw .red { stroke: var(--red); fill: none; stroke-width: 1.75; }
+.draw .red-fill { fill: var(--red); }
+.draw text.red-t { fill: var(--red); }
+.draw text.mute { fill: var(--ink-2); }
+.bar-tin, .bar-tae, .dim-red { transform-box: fill-box; transition: transform 700ms var(--ease-out), opacity 400ms var(--ease-out); }
+.bar-tin, .bar-tae { transform-origin: left center; }
+html[dir="rtl"] .draw { direction: ltr; }
+
+/* entrance: bars are drawn once, left to right; content stays visible without it */
+@media (prefers-reduced-motion: no-preference) {
+  .js .draw-in .bar-tin { animation: draw-bar 900ms var(--ease-out) 120ms both; }
+  .js .draw-in .bar-tae { animation: draw-bar 1100ms var(--ease-out) 320ms both; }
+  .js .draw-in .dim-red { animation: draw-dim 600ms var(--ease-out) 1100ms both; }
+  .js .rise > * { animation: rise 700ms var(--ease-out) both; }
+  .js .rise > *:nth-child(2) { animation-delay: 80ms; }
+  .js .rise > *:nth-child(3) { animation-delay: 160ms; }
+  .js .rise > *:nth-child(4) { animation-delay: 240ms; }
+}
+@keyframes draw-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes draw-dim { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* app capture frame: a detail of the drawing */
+.device { border: 1.5px solid var(--line); border-radius: 2.4rem; padding: 0.45rem; background: var(--paper); }
+.device img, .device video { display: block; width: 100%; height: auto; border-radius: 1.95rem; }
+
+.scroll-snap { display: flex; gap: 1.25rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem; -webkit-overflow-scrolling: touch; }
+.scroll-snap > * { scroll-snap-align: start; flex: 0 0 auto; }
+
+@media print { .sheet { border: 0; margin: 0; } }
+
+.draw-compact { display: none; }
+@media (max-width: 640px) { .draw-wide { display: none; } .draw-compact { display: block; } }
+
+details.faq > summary:hover h3 { text-decoration: underline; text-decoration-color: var(--red); text-underline-offset: 0.2em; }
+
+/* ---------- additions from the finish review ---------- */
+/* the title block of the sheet: ruled cells, the last one is the action */
+.tblock { display: grid; grid-template-columns: 1fr; border: 1.5px solid var(--line); }
+.tblock > * { padding: 1rem 1.25rem; border-top: 1px solid var(--hair); }
+.tblock > *:first-child { border-top: 0; }
+@media (min-width: 768px) {
+  .tblock { grid-template-columns: 1.4fr 1fr 1fr auto; }
+  .tblock > * { border-top: 0; border-inline-start: 1px solid var(--hair); }
+  .tblock > *:first-child { border-inline-start: 0; }
+}
+.tblock .cell-label { font-size: 0.8125rem; color: var(--ink-2); display: block; margin-bottom: 0.25rem; }
+.tblock .cell-action { padding: 0; display: flex; }
+.tblock .cell-action .stamp { flex: 1; justify-content: center; border-width: 0; padding-inline: 2rem; min-height: 4.25rem; }
+.tblock .cell-action .stamp:hover { background: var(--paper-2); color: var(--ink); }
+
+/* callout letter that ties the app capture to the drawing */
+.callout { display: inline-grid; place-items: center; inline-size: 1.75rem; block-size: 1.75rem; border: 1.5px solid var(--line); border-radius: 50%; font-family: var(--font-data); font-size: 0.8125rem; font-weight: 600; background: var(--paper); }
+
+/* the rail of captures runs to the edge of the sheet so it reads as scrollable */
+.rail { display: flex; gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-inline: max(1.25rem, calc((100% - 78rem) / 2)); scroll-padding-inline: max(1.25rem, calc((100% - 78rem) / 2)); padding-block-end: 1.25rem; margin: 0; list-style: none; }
+.rail > li { scroll-snap-align: start; flex: 0 0 auto; }
+@media (max-width: 640px) { .rail { padding-inline: 0.75rem; scroll-padding-inline: 0.75rem; } }
+
+/* drawn chevrons and the open/close mark */
+.chev { inline-size: 0.8em; block-size: 0.8em; stroke: currentColor; fill: none; stroke-width: 1.75; flex: none; }
+.faq-mark { inline-size: 1rem; block-size: 1rem; stroke: var(--ink); stroke-width: 1.75; fill: none; margin-top: 0.4rem; flex: none; }
+.faq-mark .v { transition: transform 200ms var(--ease-out); transform-origin: center; }
+details[open] > summary .faq-mark .v { transform: scaleY(0); }
+
+/* mobile: the live drawing stays in view while the inputs are edited */
+.sticky-strip { position: sticky; top: 0; z-index: 20; background: var(--paper); border-bottom: 1px solid var(--hair); margin: 0 -0.75rem 1.5rem; padding: 0.5rem 0.75rem; }
+@media (min-width: 1024px) { .sticky-strip { display: none; } }
+
+/* the cost bar draws itself as the section enters; browsers without scroll-driven animation just show it */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .cost-draw .seg { transform-box: fill-box; transform-origin: left center; animation: draw-bar linear both; animation-timeline: view(); animation-range: entry 15% cover 38%; }
+    .cost-draw .seg-2 { animation-range: entry 25% cover 46%; }
+    .cost-draw .seg-3 { animation-range: entry 35% cover 54%; }
+  }
+}
+
+@media (min-width: 768px) { .tfoot { grid-template-columns: 1.3fr 1fr 1fr 1.4fr; } }
+
+/* the hero CTA is a two-cell title block: what it runs on, and the action */
+.tblock-compact { grid-template-columns: 1fr; align-self: end; }
+@media (min-width: 768px) { .tblock-compact { grid-template-columns: auto auto; } }
