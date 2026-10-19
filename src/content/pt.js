@@ -165,9 +165,7 @@ export default {
     },
     plans: {
       title: 'O que é grátis e o que não é',
-      soon: "Em breve",
       lede: "As duas compras são únicas, sem subscrição. A TAEG real com custos faz parte do Capital Pro na app; neste site pode calculá-la gratuitamente.",
-      note: "O Capital Pro ainda não está disponível na App Store. O preço será publicado aqui quando estiver.",
       rows: [
         ['Capital', 'Grátis, com anúncios. Prestação, juros, plano de amortização, amortização antecipada, depósitos e comparador.'],
         ['Remover anúncios', 'Compra única. Retira os anúncios e mais nada.'],

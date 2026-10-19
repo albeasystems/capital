@@ -165,9 +165,7 @@ export default {
     },
     plans: {
       title: 'What is free and what is not',
-      soon: "Coming soon",
       lede: "Both purchases are one-time, with no subscription. The real APR with costs is part of Capital Pro in the app; on this website you can calculate it for free.",
-      note: "Capital Pro is not yet available on the App Store. Its price will be published here when it is.",
       rows: [
         ['Capital', 'Free, with ads. Payment, interest, amortization schedule, early repayment, deposits and the comparison tool.'],
         ['Remove ads', 'One-time purchase. Removes the ads and nothing else.'],

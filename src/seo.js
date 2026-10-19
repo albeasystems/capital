@@ -62,7 +62,7 @@ const app = (lang) => {
     downloadUrl: APP_STORE,
     installUrl: APP_STORE,
     image: url('media/icon-256.png'),
-    screenshot: ['inputs', 'results', 'real', 'donut', 'insights'].map((f) => url(`media/views/${['es', 'en'].includes(lang) ? lang : 'en'}/${f}.webp`)),
+    screenshot: ['inputs', 'results', 'real', 'donut', 'insights'].map((f) => url(`media/views/${lang}/${f}.webp`)),
     featureList: ['Real APR with fees and insurance', 'French, linear and American amortization', 'Early repayment simulator', 'Deposits with tax and inflation', 'Side-by-side comparison', 'PDF report (Capital Pro)'],
     publisher: { '@id': `${url('')}#publisher` },
   };

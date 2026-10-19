@@ -24,8 +24,7 @@ URLs keep working. App 3.1 still links `/calculo/` (a 404 since the repo was ren
 - `public/media/` comes from `../marketing/` (`make-gif.mjs`, `make-web-media.mjs`, `make-og.mjs`).
 
 ## Things to know
-- Capital Pro has no price here on purpose, and `home.plans.note` says it is not yet on the App Store.
-  Delete that note and add the price when the product exists.
+- Capital Pro is described without a price on purpose (no price source in the repo). Add it to `home.plans.rows` when you want it shown.
 - Legal pages (privacy, terms, support) are written for Spanish and English only; other languages link to English.
 - App captures exist in all nine languages (`marketing/source/<lang>/`, taken in the iOS Simulator with the app set to that language).
 - ar / hi / zh copy has not been reviewed by a native speaker.

@@ -167,9 +167,7 @@ export default {
     },
     plans: {
       title: 'Qué es gratis y qué no',
-      soon: "Próximamente",
       lede: "Las dos compras son únicas, sin suscripción. La TAE real con costes es parte de Capital Pro en la app; en esta web puedes calcularla gratis.",
-      note: "Capital Pro aún no está disponible en la App Store. Publicaremos aquí su precio cuando lo esté.",
       rows: [
         ['Capital', 'Gratis, con anuncios. Cuota, intereses, cuadro de amortización, amortización anticipada, depósitos y comparador.'],
         ['Quitar anuncios', 'Compra única. Elimina los anuncios y nada más.'],

@@ -147,7 +147,7 @@ export function Home({ r }) {
                 <div className="device"><img src={href(`media/views/${cl}/${v.file}.webp`)} width="590" height="1283" loading="lazy" decoding="async" alt={v.alt} /></div>
                 <figcaption className="mt-3 flex items-start gap-3 text-sm">
                   <span className="callout shrink-0" aria-hidden="true">{i + 1}</span>
-                  <span>{v.caption}{v.file === 'report' && <span className="muted block">{home.app.reportNote} <span className="data" style={{ color: 'var(--red)' }}>{home.plans.soon}</span></span>}</span>
+                  <span>{v.caption}{v.file === 'report' && <span className="muted block">{home.app.reportNote}</span>}</span>
                 </figcaption>
               </figure>
             </li>
@@ -165,12 +165,11 @@ export function Home({ r }) {
           <dl className="m-0 mt-10 grid grid-cols-1 md:grid-cols-3" style={{ border: '1.5px solid var(--line)' }}>
             {home.plans.rows.map(([k, v], i) => (
               <div key={k} className={`p-6 ${i ? 'border-t md:border-t-0 md:border-s' : ''}`} style={{ borderColor: 'var(--hair)' }}>
-                <dt className="h3 mb-3 flex flex-wrap items-center gap-3">{k}{i === 2 && <span className="data rounded-none px-2 py-0.5 text-xs" style={{ border: '1px solid var(--red)', color: 'var(--red)' }}>{home.plans.soon}</span>}</dt>
+                <dt className="h3 mb-3 flex flex-wrap items-center gap-3">{k}</dt>
                 <dd className="m-0 text-[0.9375rem]">{v}</dd>
               </div>
             ))}
           </dl>
-          <p className="mt-5 measure text-[0.9375rem]" style={{ color: 'var(--ink)' }}>{home.plans.note}</p>
         </div>
       </section>
 

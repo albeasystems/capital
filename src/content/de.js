@@ -165,9 +165,7 @@ export default {
     },
     plans: {
       title: 'Was kostenlos ist und was nicht',
-      soon: "Demnächst",
       lede: "Beide Käufe sind Einmalkäufe, ohne Abo. Der echte Effektivzins mit Kosten gehört in der App zu Capital Pro; auf dieser Website können Sie ihn kostenlos berechnen.",
-      note: "Capital Pro ist im App Store noch nicht verfügbar. Der Preis wird hier veröffentlicht, sobald es so weit ist.",
       rows: [
         ['Capital', 'Kostenlos, mit Werbung. Rate, Zinsen, Tilgungsplan, Sondertilgung, Festgeld und Vergleich.'],
         ['Werbung entfernen', 'Einmalkauf. Entfernt die Werbung und sonst nichts.'],

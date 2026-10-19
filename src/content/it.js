@@ -165,9 +165,7 @@ export default {
     },
     plans: {
       title: 'Cosa è gratis e cosa no',
-      soon: "Prossimamente",
       lede: "Entrambi gli acquisti sono una tantum, senza abbonamento. Il TAEG reale con i costi fa parte di Capital Pro nell’app; su questo sito puoi calcolarlo gratis.",
-      note: "Capital Pro non è ancora disponibile su App Store. Il prezzo sarà pubblicato qui quando lo sarà.",
       rows: [
         ['Capital', 'Gratis, con pubblicità. Rata, interessi, piano di ammortamento, estinzione anticipata, depositi e confronto.'],
         ['Rimuovi pubblicità', 'Acquisto una tantum. Toglie la pubblicità e nient’altro.'],
