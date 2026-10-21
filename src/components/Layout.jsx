@@ -1,4 +1,5 @@
-import { LANGS, LANG_NAMES, LEGAL_LANGS, APP_STORE, CONTACT, PUBLISHER, href } from '../site.js';
+import { useEffect, useRef } from 'react';
+import { LANGS, LANG_NAMES, HREFLANG, LEGAL_LANGS, APP_STORE, CONTACT, PUBLISHER, href } from '../site.js';
 import { content, PAGE_IDS } from '../content/index.js';
 
 /** The same page in another language, for the language menu and hreflang. */
@@ -18,18 +19,41 @@ export function Logo({ lang }) {
   );
 }
 
+/** Remembered by the root page (the language chooser), which sends returning visitors to this language. */
+export const LANG_KEY = 'capital-lang';
+
+const Globe = () => (
+  <svg className="globe" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" /><path d="M2.5 10h15M10 2.5c2.2 2.1 3.3 4.6 3.3 7.5s-1.1 5.4-3.3 7.5c-2.2-2.1-3.3-4.6-3.3-7.5S7.8 4.6 10 2.5Z" /></svg>
+);
+
+/** Real links inside a <details>, so it works without JavaScript; with it, it also closes on outside click and Escape. */
 function LangMenu({ r, ui }) {
   const langs = LANGS.filter((l) => content[l]);
+  const box = useRef(null);
+  useEffect(() => {
+    const el = box.current;
+    const close = () => { el.open = false; };
+    const onDown = (e) => { if (el.open && !el.contains(e.target)) close(); };
+    const onKey = (e) => { if (e.key === 'Escape' && el.open) { close(); el.querySelector('summary').focus(); } };
+    document.addEventListener('pointerdown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('pointerdown', onDown); document.removeEventListener('keydown', onKey); };
+  }, []);
+  const remember = (l) => { try { localStorage.setItem(LANG_KEY, l); } catch { /* private mode: the choice just is not remembered */ } };
   return (
-    <details className="relative">
-      <summary className="flex cursor-pointer items-center gap-2 py-2 text-sm" aria-label={ui.langLabel}>
-        <span className="data">{r.lang.toUpperCase()}</span><svg className="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.25 6 8l4-3.75" /></svg>
+    <details className="relative" ref={box}>
+      <summary className="lang-btn" aria-label={`${ui.langLabel}: ${LANG_NAMES[r.lang]}`}>
+        <Globe />
+        <span className="hidden sm:inline" lang={r.lang}>{LANG_NAMES[r.lang]}</span>
+        <span className="data sm:hidden">{r.lang.toUpperCase()}</span>
+        <svg className="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" /></svg>
       </summary>
-      <ul className="absolute end-0 z-30 mt-2 min-w-44 list-none p-2 shadow-lg" style={{ background: 'var(--paper)', border: '1px solid var(--rule-strong)', borderRadius: 14 }}>
+      <ul className="lang-list absolute end-0 z-30 mt-2 list-none p-2" aria-label={ui.langLabel}>
         {langs.map((l) => (
           <li key={l}>
-            <a lang={l} hrefLang={l} href={href(counterpart(r, l))} className="block rounded-lg px-3 py-2 text-sm no-underline hover:bg-[var(--paper-2)]" aria-current={l === r.lang ? 'true' : undefined}
-              style={l === r.lang ? { fontWeight: 650 } : undefined}>{LANG_NAMES[l]}</a>
+            <a lang={HREFLANG[l]} hrefLang={HREFLANG[l]} href={href(counterpart(r, l))} className="lang-item" onClick={() => remember(l)} aria-current={l === r.lang ? 'true' : undefined}>
+              {LANG_NAMES[l]}
+            </a>
           </li>
         ))}
       </ul>
@@ -75,7 +99,7 @@ export function Footer({ r, ui }) {
             <a href={href(`${legal}/support/`)}>{f.support}</a>
           </div>
           <div className="grid grid-cols-2 content-start gap-x-6 gap-y-1.5 text-sm"><span className="cell-label col-span-2">{f.languages}</span>
-            {LANGS.filter((l) => content[l]).map((l) => <a key={l} lang={l} hrefLang={l} href={href(counterpart(r, l))}>{LANG_NAMES[l]}</a>)}
+            {LANGS.filter((l) => content[l]).map((l) => <a key={l} lang={HREFLANG[l]} hrefLang={HREFLANG[l]} href={href(counterpart(r, l))}>{LANG_NAMES[l]}</a>)}
           </div>
         </div>
         <p className="muted mt-10 border-t pt-6 text-sm measure" style={{ borderColor: "var(--rule)" }}>{f.disclaimer}</p>

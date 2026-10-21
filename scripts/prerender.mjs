@@ -32,7 +32,7 @@ for (const r of ssr.routes()) {
   const c = ssr.content[r.lang];
   const dir = c.dir || 'ltr';
   write(`${r.route}index.html`, `<!doctype html>
-<html lang="${r.lang === 'zh' ? 'zh-Hans' : r.lang}" dir="${dir}">
+<html lang="${ssr.HREFLANG[r.lang]}" dir="${dir}">
   <head>
     ${ssr.headHtml(r, assets)}
     <script>document.documentElement.classList.add('js')</script>
@@ -48,8 +48,8 @@ for (const r of ssr.routes()) {
 const origin = new URL(ssr.sitemapXml('x').match(/<loc>([^<]+)<\/loc>/)[1]).origin;
 const rootUrl = `${origin}${base}`;
 const langs = [...new Set(ssr.routes().filter((r) => r.page === 'home').map((r) => r.lang))];
-const names = { es: 'Español', en: 'English', fr: 'Français', it: 'Italiano', de: 'Deutsch', pt: 'Português', ar: 'العربية', hi: 'हिन्दी', zh: '简体中文' };
-const hreflang = (l) => (l === 'zh' ? 'zh-Hans' : l);
+const names = ssr.LANG_NAMES;
+const hreflang = (l) => ssr.HREFLANG[l];
 
 // Root: language chooser with real links; people are redirected by browser language.
 write('index.html', `<!doctype html>
@@ -65,9 +65,13 @@ write('index.html', `<!doctype html>
     <link rel="icon" type="image/png" href="${base}media/favicon.png" />
     <script>
       var have = ${JSON.stringify(langs)};
-      var l = (navigator.languages && navigator.languages[0] || navigator.language || "en").slice(0, 2);
-      location.replace(base() + (have.indexOf(l) > -1 ? l : "en") + "/");
-      function base() { return ${JSON.stringify(base)}; }
+      var pick = "en";
+      try { var saved = localStorage.getItem("capital-lang"); if (saved && have.indexOf(saved) > -1) pick = saved; else throw 0; }
+      catch (e) {
+        var prefs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+        for (var i = 0; i < prefs.length; i++) { var c = String(prefs[i]).slice(0, 2).toLowerCase(); if (have.indexOf(c) > -1) { pick = c; break; } }
+      }
+      location.replace(${JSON.stringify(base)} + pick + "/");
     </script>
   </head>
   <body style="font-family:system-ui,sans-serif;max-width:34rem;margin:4rem auto;padding:0 1.25rem">
@@ -116,10 +120,9 @@ write('404.html', `<!doctype html>
 </html>
 `);
 
-const today = new Date().toISOString().slice(0, 10);
-write('sitemap.xml', ssr.sitemapXml(today));
+write('sitemap.xml', ssr.sitemapXml(ssr.UPDATED));
 write('robots.txt', ssr.robotsTxt());
 write('llms.txt', ssr.llmsTxt('en'));
-write('llms-es.txt', ssr.llmsTxt('es'));
+for (const l of langs.filter((x) => x !== 'en')) write(`llms-${l}.txt`, ssr.llmsTxt(l));
 write('llms-full.txt', ssr.llmsFull());
 console.log(`prerendered ${count} pages + root, legal redirects, 404, sitemap, robots, llms`);

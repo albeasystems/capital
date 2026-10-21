@@ -5,6 +5,7 @@ export default {
   ui: {
     skip: 'Skip to content',
     nav: { calculators: 'Calculators', app: 'The app', faq: 'FAQ' },
+    updated: 'Updated',
     langLabel: 'Language',
     stamp: 'Download on the App Store',
     stampShort: 'App Store',
@@ -180,7 +181,7 @@ export default {
         ['Is Capital free?', 'It is free to download and has ads. Removing the ads and Capital Pro are separate one-time purchases with no subscription. Pro does not remove the ads.'],
         ['Does my data leave my device?', 'The calculations run on your device and Capital has no user accounts. Ads are served by third-party ad networks, with your consent where the law requires it. The privacy policy has the details.'],
         ['Does it work for variable-rate loans?', 'Capital calculates with a constant rate. For a variable-rate loan the result holds until the next rate review.'],
-        ['Which languages does it support?', 'Spanish, English, French, Italian, German, Portuguese, Arabic, Hindi and Simplified Chinese. It runs on iPhone and iPad with iOS 17 or later.'],
+        ['Which languages does it support?', 'Spanish, English, French, Italian, German, Portuguese, Arabic, Hindi, Simplified Chinese, Japanese, Korean and Vietnamese. It runs on iPhone and iPad with iOS 17 or later.'],
         ['Is this financial advice?', 'No. Capital is an informational tool. The figures depend on what you enter and are not an offer or a recommendation.'],
       ],
     },

@@ -1,20 +1,20 @@
 import { Fragment } from 'react';
 import { content, PAGE_IDS } from '../content/index.js';
 import { amortizingLoan } from '../engine.js';
-import { APP_STORE, href } from '../site.js';
+import { APP_STORE, UPDATED, INTL, PUBLISHER, href } from '../site.js';
 import { money } from '../format.js';
 import { Shell, calcRoute } from './Layout.jsx';
 import { RateBars, CostStack } from './Drawing.jsx';
 import { Lab, LoanLab, tpl } from './Labs.jsx';
 import { pct } from '../format.js';
 import { pageMeta } from '../seo.js';
+import { captureLang } from '../captures.js';
 
 // The worked example the whole site returns to: the same loan the app's captures show.
 export const EXAMPLE = { principal: 20000, annualRatePct: 7, years: 5, costs: { opening: 1, openingIsPercent: true, insurance: 45 } };
 export const example = amortizingLoan(EXAMPLE);
 
 // Every language has its own set of app captures (marketing/source/<lang>/), so the site shows the app in the visitor's language.
-const captureLang = (lang) => lang;
 
 function Stamp({ children, quiet }) {
   return <a href={APP_STORE} className={`stamp ${quiet ? 'stamp-quiet' : ''}`} rel="noopener">{children}</a>;
@@ -227,6 +227,7 @@ export function CalcPage({ r }) {
             <h1 id="h1" className="h1 max-w-[20ch]" style={{ fontSize: 'clamp(2.1rem, 5vw, 4.2rem)' }}>{p.h1}</h1>
             <p className="lede max-w-[62ch]" style={{ color: 'var(--ink)' }}>{p.answer}</p>
             <p className="data rounded-lg px-3 py-2 text-[0.9375rem] inline-block" style={{ color: 'var(--ink-2)', background: 'var(--paper-2)' }} dir="ltr">{p.formula}</p>
+            <p className="label">{ui.updated}: <time dateTime={UPDATED}>{new Intl.DateTimeFormat(INTL[r.lang], { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(UPDATED))}</time> · {PUBLISHER}</p>
           </div>
         </div>
       </section>

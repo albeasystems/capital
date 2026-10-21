@@ -5,6 +5,7 @@ export default {
   ui: {
     skip: 'Zum Inhalt springen',
     nav: { calculators: 'Rechner', app: 'Die App', faq: 'Fragen' },
+    updated: 'Aktualisiert',
     langLabel: 'Sprache',
     stamp: 'Laden im App Store',
     stampShort: 'App Store',
@@ -180,7 +181,7 @@ export default {
         ['Ist Capital kostenlos?', 'Der Download ist kostenlos und die App zeigt Werbung. Werbung entfernen und Capital Pro sind getrennte Einmalkäufe ohne Abo. Pro entfernt die Werbung nicht.'],
         ['Verlassen meine Daten das Gerät?', 'Die Berechnungen laufen auf Ihrem Gerät und Capital hat keine Benutzerkonten. Werbung liefern Werbenetzwerke Dritter, mit Ihrer Einwilligung, wo das Gesetz sie verlangt. Details stehen in der Datenschutzerklärung.'],
         ['Funktioniert es bei Krediten mit variablem Zins?', 'Capital rechnet mit einem konstanten Zins. Bei einem variabel verzinsten Kredit gilt das Ergebnis bis zur nächsten Zinsanpassung.'],
-        ['In welchen Sprachen gibt es die App?', 'Spanisch, Englisch, Französisch, Italienisch, Deutsch, Portugiesisch, Arabisch, Hindi und vereinfachtes Chinesisch. Sie läuft auf iPhone und iPad mit iOS 17 oder neuer.'],
+        ['In welchen Sprachen gibt es die App?', 'Spanisch, Englisch, Französisch, Italienisch, Deutsch, Portugiesisch, Arabisch, Hindi, vereinfachtes Chinesisch, Japanisch, Koreanisch und Vietnamesisch. Sie läuft auf iPhone und iPad mit iOS 17 oder neuer.'],
         ['Ist das eine Finanzberatung?', 'Nein. Capital ist ein Informationswerkzeug. Die Zahlen hängen von Ihren Eingaben ab und sind weder ein Angebot noch eine Empfehlung.'],
       ],
     },

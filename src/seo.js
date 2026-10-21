@@ -1,7 +1,8 @@
 // One place that knows how every page presents itself to a crawler: <head> data, JSON-LD, sitemap,
 // robots and the llms.txt files. The prerender script and the components both read from here.
 import { content, PAGE_IDS } from './content/index.js';
-import { LANGS, HREFLANG, LOCALES, LEGAL_LANGS, ORIGIN, PUBLISHER, SITE_NAME, CONTACT, APP_STORE, APP_ID, BASE, url, href } from './site.js';
+import { captureLang } from './captures.js';
+import { LANGS, HREFLANG, LOCALES, INTL, LANG_NAMES, LEGAL_LANGS, PUBLISHED, UPDATED, ORIGIN, PUBLISHER, SITE_NAME, CONTACT, APP_STORE, APP_ID, BASE, url, href } from './site.js';
 
 const LEGAL = ['privacy', 'terms', 'support'];
 const have = (l) => !!content[l];
@@ -43,7 +44,7 @@ const faqSchema = (items) => ({
 });
 
 const publisher = {
-  '@type': 'Organization', '@id': `${url('')}#publisher`, name: PUBLISHER, email: CONTACT,
+  '@type': 'Organization', '@id': `${url('')}#publisher`, name: PUBLISHER, email: CONTACT, url: url(''), logo: { '@type': 'ImageObject', url: url('media/icon-256.png'), width: 256, height: 256 },
   contactPoint: { '@type': 'ContactPoint', email: CONTACT, contactType: 'customer support' },
 };
 
@@ -62,7 +63,7 @@ const app = (lang) => {
     downloadUrl: APP_STORE,
     installUrl: APP_STORE,
     image: url('media/icon-256.png'),
-    screenshot: ['inputs', 'results', 'real', 'donut', 'insights'].map((f) => url(`media/views/${lang}/${f}.webp`)),
+    screenshot: ['inputs', 'results', 'real', 'donut', 'insights'].map((f) => url(`media/views/${captureLang(lang)}/${f}.webp`)),
     featureList: ['Real APR with fees and insurance', 'French, linear and American amortization', 'Early repayment simulator', 'Deposits with tax and inflation', 'Side-by-side comparison', 'PDF report (Capital Pro)'],
     publisher: { '@id': `${url('')}#publisher` },
   };
@@ -78,13 +79,15 @@ export function jsonLd(r) {
       { '@type': 'WebSite', '@id': `${url('')}#site`, url: url(`${r.lang}/`), name: SITE_NAME, inLanguage: HREFLANG[r.lang], publisher: { '@id': `${url('')}#publisher` } },
       publisher,
       app(r.lang),
-      { '@type': 'WebPage', '@id': `${here}#page`, url: here, name: meta.title, description: meta.description, inLanguage: HREFLANG[r.lang], isPartOf: { '@id': `${url('')}#site` }, about: { '@id': `${url('')}#app` } },
+      { '@type': 'WebPage', '@id': `${here}#page`, url: here, name: meta.title, description: meta.description, inLanguage: HREFLANG[r.lang], datePublished: PUBLISHED, dateModified: UPDATED, primaryImageOfPage: { '@type': 'ImageObject', url: url(`media/og-${r.lang}.jpg`), width: 1200, height: 630 }, isPartOf: { '@id': `${url('')}#site` }, about: { '@id': `${url('')}#app` } },
+      { '@type': 'ItemList', '@id': `${here}#calculators`, name: c.home.index.title, numberOfItems: PAGE_IDS.length,
+        itemListElement: PAGE_IDS.map((id, i) => ({ '@type': 'ListItem', position: i + 1, name: c.pages[id].h1, url: url(`${r.lang}/${c.pages[id].slug}/`) })) },
       faqSchema(c.home.faq.items),
     );
   } else if (r.page === 'calc') {
     const p = c.pages[r.id];
     graph.push(
-      { '@type': 'WebPage', '@id': `${here}#page`, url: here, name: p.h1, description: meta.description, inLanguage: HREFLANG[r.lang], isPartOf: { '@id': `${url('')}#site` }, about: { '@id': `${url('')}#app` }, mainEntity: { '@id': `${here}#tool` } },
+      { '@type': 'WebPage', '@id': `${here}#page`, url: here, name: p.h1, description: meta.description, inLanguage: HREFLANG[r.lang], datePublished: PUBLISHED, dateModified: UPDATED, primaryImageOfPage: { '@type': 'ImageObject', url: url(`media/og-${r.lang}.jpg`), width: 1200, height: 630 }, author: { '@id': `${url('')}#publisher` }, publisher: { '@id': `${url('')}#publisher` }, isPartOf: { '@id': `${url('')}#site` }, about: { '@id': `${url('')}#app` }, mainEntity: { '@id': `${here}#tool` } },
       { '@type': 'WebApplication', '@id': `${here}#tool`, name: p.h1, applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'Requires JavaScript', url: here,
         inLanguage: HREFLANG[r.lang], offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' }, isBasedOn: { '@id': `${url('')}#app` }, publisher: { '@id': `${url('')}#publisher` } },
       { '@type': 'BreadcrumbList', itemListElement: [
@@ -107,8 +110,9 @@ export function headHtml(r, assets) {
   const canonical = url(r.route);
   const alts = alternates(r);
   const xdef = alts.find(([l]) => l === 'en') || alts[0];
-  const ogLang = have(r.lang) && ['es', 'en'].includes(r.lang) ? r.lang : 'en';
-  const og = url(`media/og-${ogLang}.jpg`);
+  const og = url(`media/og-${r.lang}.jpg`);
+  const pct = (v) => new Intl.NumberFormat(INTL[r.lang], { style: 'percent', maximumFractionDigits: 2 }).format(v / 100);
+  const ogAlt = content[r.lang].home.h1.replace('{tin}', pct(7)).replace('{tae}', pct(12.75));
   const ld = JSON.stringify(jsonLd(r)).replace(/</g, '\\u003c');
   return `<meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -132,7 +136,8 @@ export function headHtml(r, assets) {
     <meta property="og:image" content="${og}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="${esc(content[ogLang].home.h1.replace('{tin}', '7%').replace('{tae}', '12.75%'))}" />
+    <meta property="og:image:alt" content="${esc(ogAlt)}" />
+    <meta name="twitter:image:alt" content="${esc(ogAlt)}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${esc(m.title)}" />
     <meta name="twitter:description" content="${esc(m.description)}" />
@@ -148,8 +153,8 @@ export function headHtml(r, assets) {
 const bullet = (title, route, note) => `- [${title}](${url(route)})${note ? `: ${note}` : ''}`;
 
 const SUMMARY = {
-  es: 'Capital es una app para iPhone y iPad que calcula la TAE real de un préstamo sumando comisiones y seguros, simula la amortización anticipada (reducir plazo o cuota, con comisión de cancelación y frente a invertir), compara dos ofertas y calcula depósitos netos de retención e inflación. Tres sistemas de amortización (francés, lineal, americano), informe PDF, nueve idiomas. Gratis con anuncios; quitar anuncios y Capital Pro son compras únicas sin suscripción. Los cálculos se hacen en el dispositivo. Herramienta informativa, no asesoramiento financiero.',
-  en: 'Capital is an iPhone and iPad app that works out the real APR of a loan by adding fees and insurance, simulates early repayment (shorten the term or lower the payment, with a cancellation fee and against investing the money), compares two offers and calculates deposits net of tax and inflation. Three amortization systems (French, linear, American), PDF reports, nine languages. Free with ads; removing ads and Capital Pro are one-time purchases with no subscription. Calculations run on the device. Informational tool, not financial advice.',
+  es: 'Capital es una app para iPhone y iPad que calcula la TAE real de un préstamo sumando comisiones y seguros, simula la amortización anticipada (reducir plazo o cuota, con comisión de cancelación y frente a invertir), compara dos ofertas y calcula depósitos netos de retención e inflación. Tres sistemas de amortización (francés, lineal, americano), informe PDF, doce idiomas. Gratis con anuncios; quitar anuncios y Capital Pro son compras únicas sin suscripción. Los cálculos se hacen en el dispositivo. Herramienta informativa, no asesoramiento financiero.',
+  en: 'Capital is an iPhone and iPad app that works out the real APR of a loan by adding fees and insurance, simulates early repayment (shorten the term or lower the payment, with a cancellation fee and against investing the money), compares two offers and calculates deposits net of tax and inflation. Three amortization systems (French, linear, American), PDF reports, twelve languages. Free with ads; removing ads and Capital Pro are one-time purchases with no subscription. Calculations run on the device. Informational tool, not financial advice.',
 };
 
 export function llmsTxt(lang) {
@@ -161,13 +166,14 @@ export function llmsTxt(lang) {
     `# ${SITE_NAME}`, '', `> ${SUMMARY[lang] || SUMMARY.en}`, '',
     `## ${L.app}`,
     bullet(c.home.meta.title, `${lang}/`, c.home.meta.description),
-    `- [${L.store}](${APP_STORE})`, '',
+    `- [${L.store}](${APP_STORE})`,
+    `- [${SITE_NAME}: full text](${url('llms-full.txt')})`, '',
     `## ${L.calc}`,
     ...PAGE_IDS.map((id) => bullet(c.pages[id].h1, `${lang}/${c.pages[id].slug}/`, c.pages[id].answer)), '',
     `## ${L.legal}`,
     ...(LEGAL_LANGS.includes(lang) ? LEGAL.map((id) => bullet(c.legal[id].title, `${lang}/${id}/`)) : []), '',
     `## ${L.other}`,
-    ...activeLangs().filter((l) => l !== lang).map((l) => bullet(`${l.toUpperCase()}`, `${l}/`)), '',
+    ...activeLangs().filter((l) => l !== lang).map((l) => bullet(LANG_NAMES[l], `${l}/`)), '',
   ];
   return lines.join('\n');
 }
@@ -195,20 +201,20 @@ export function sitemapXml(lastmod) {
     return `  <url>
     <loc>${url(r.route)}</loc>
     <lastmod>${lastmod}</lastmod>
-${alts.map(([l, rt]) => `    <xhtml:link rel="alternate" hreflang="${HREFLANG[l]}" href="${url(rt)}" />`).join('\n')}
+${r.page === 'home' ? `    <image:image><image:loc>${url(`media/og-${r.lang}.jpg`)}</image:loc></image:image>\n${['inputs', 'results', 'real', 'donut', 'insights'].map((f) => `    <image:image><image:loc>${url(`media/views/${captureLang(r.lang)}/${f}.webp`)}</image:loc></image:image>`).join('\n')}\n` : ''}${alts.map(([l, rt]) => `    <xhtml:link rel="alternate" hreflang="${HREFLANG[l]}" href="${url(rt)}" />`).join('\n')}
     <xhtml:link rel="alternate" hreflang="x-default" href="${url(xdef[1])}" />
     <priority>${r.page === 'home' ? '1.0' : r.page === 'calc' ? '0.8' : '0.3'}</priority>
   </url>`;
   }).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${entries}
 </urlset>
 `;
 }
 
 export function robotsTxt() {
-  const bots = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'PerplexityBot', 'Google-Extended', 'Applebot', 'Applebot-Extended', 'CCBot'];
+  const bots = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'PerplexityBot', 'Google-Extended', 'Applebot', 'Applebot-Extended', 'CCBot', 'Perplexity-User', 'DuckAssistBot', 'Meta-ExternalAgent', 'Meta-ExternalFetcher', 'Amazonbot', 'MistralAI-User', 'cohere-ai', 'YouBot', 'Bingbot', 'Googlebot'];
   return `User-agent: *
 Allow: /
 

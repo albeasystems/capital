@@ -5,6 +5,7 @@ export default {
   ui: {
     skip: 'Vai al contenuto',
     nav: { calculators: 'Calcolatori', app: 'L’app', faq: 'Domande' },
+    updated: 'Aggiornato',
     langLabel: 'Lingua',
     stamp: 'Scarica su App Store',
     stampShort: 'App Store',
@@ -180,7 +181,7 @@ export default {
         ['Capital è gratis?', 'Si scarica gratis e ha pubblicità. Rimuovere la pubblicità e Capital Pro sono acquisti una tantum separati, senza abbonamento. Pro non toglie la pubblicità.'],
         ['I miei dati lasciano il dispositivo?', 'I calcoli avvengono sul tuo dispositivo e Capital non ha account utente. La pubblicità è fornita da reti pubblicitarie di terzi, con il tuo consenso dove la legge lo richiede. I dettagli sono nell’informativa sulla privacy.'],
         ['Funziona con i prestiti a tasso variabile?', 'Capital calcola con un tasso costante. Per un prestito a tasso variabile il risultato vale fino alla prossima revisione del tasso.'],
-        ['In quali lingue è disponibile?', 'Spagnolo, inglese, francese, italiano, tedesco, portoghese, arabo, hindi e cinese semplificato. Funziona su iPhone e iPad con iOS 17 o successivo.'],
+        ['In quali lingue è disponibile?', 'Spagnolo, inglese, francese, italiano, tedesco, portoghese, arabo, hindi, cinese semplificato, giapponese, coreano e vietnamita. Funziona su iPhone e iPad con iOS 17 o successivo.'],
         ['È consulenza finanziaria?', 'No. Capital è uno strumento informativo. Le cifre dipendono da ciò che inserisci e non sono un’offerta né una raccomandazione.'],
       ],
     },

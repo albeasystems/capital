@@ -5,6 +5,7 @@ export default {
   ui: {
     skip: 'Ir para o conteúdo',
     nav: { calculators: 'Calculadoras', app: 'A app', faq: 'Perguntas' },
+    updated: 'Atualizado',
     langLabel: 'Idioma',
     stamp: 'Transferir na App Store',
     stampShort: 'App Store',
@@ -180,7 +181,7 @@ export default {
         ['O Capital é grátis?', 'A transferência é gratuita e a app mostra anúncios. Remover anúncios e o Capital Pro são compras únicas e separadas, sem subscrição. O Pro não remove os anúncios.'],
         ['Os meus dados saem do dispositivo?', 'Os cálculos são feitos no seu dispositivo e o Capital não tem contas de utilizador. Os anúncios são servidos por redes publicitárias de terceiros, com o seu consentimento onde a lei o exige. Os detalhes estão na política de privacidade.'],
         ['Serve para créditos de taxa variável?', 'O Capital calcula com uma taxa constante. Num crédito de taxa variável, o resultado vale até à próxima revisão da taxa.'],
-        ['Em que idiomas está disponível?', 'Espanhol, inglês, francês, italiano, alemão, português, árabe, hindi e chinês simplificado. Funciona em iPhone e iPad com iOS 17 ou posterior.'],
+        ['Em que idiomas está disponível?', 'Espanhol, inglês, francês, italiano, alemão, português, árabe, hindi, chinês simplificado, japonês, coreano e vietnamita. Funciona em iPhone e iPad com iOS 17 ou posterior.'],
         ['É aconselhamento financeiro?', 'Não. O Capital é uma ferramenta informativa. Os valores dependem do que introduz e não constituem uma oferta nem uma recomendação.'],
       ],
     },

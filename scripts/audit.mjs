@@ -30,7 +30,7 @@ for (const f of pages) {
   const title = one(/<title>([^<]*)<\/title>/), desc = one(/<meta name="description" content="([^"]*)"/);
   const canon = one(/<link rel="canonical" href="([^"]*)"/);
   if (!title) warn(rel, 'no <title>'); else { if (title.length > 72) warn(rel, `title ${title.length} chars: ${title}`); (titles.get(title) || titles.set(title, []).get(title)).push(rel); }
-  if (!desc) warn(rel, 'no meta description'); else { const min = rel.startsWith('zh/') ? 30 : 80; // CJK characters carry about three times the content of Latin ones
+  if (!desc) warn(rel, 'no meta description'); else { const min = /^(zh|ja|ko)\//.test(rel) ? 30 : 80; // CJK characters carry about three times the content of Latin ones
     if (desc.length < min || desc.length > 200) warn(rel, `description ${desc.length} chars`); (descs.get(desc) || descs.set(desc, []).get(desc)).push(rel); }
   if (canon !== `${ORIGIN}${BASE}${rel}`) warn(rel, `canonical ${canon}`);
   const h1s = (html.match(/<h1[ >]/g) || []).length;
@@ -85,7 +85,9 @@ const sm = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 if (locs.length !== pages.length) warn('sitemap.xml', `${locs.length} urls vs ${pages.length} pages`);
 for (const l of locs) if (!exists(l.replace(ORIGIN, ''))) warn('sitemap.xml', `lists missing ${l}`);
-for (const need of ['robots.txt', 'llms.txt', 'llms-es.txt', 'llms-full.txt', '404.html', 'privacy.html', 'terms.html', 'support.html']) if (!fs.existsSync(path.join(root, need))) warn(need, 'missing');
+const langDirs = fs.readdirSync(root).filter((d) => /^[a-z]{2}$/.test(d));
+for (const l of langDirs) { if (!fs.existsSync(path.join(root, `media/og-${l}.jpg`))) warn(l, 'no og image'); if (l !== 'en' && !fs.existsSync(path.join(root, `llms-${l}.txt`))) warn(l, 'no llms file'); }
+for (const need of ['robots.txt', 'llms.txt', 'llms-full.txt', '404.html', 'privacy.html', 'terms.html', 'support.html']) if (!fs.existsSync(path.join(root, need))) warn(need, 'missing');
 
 console.log(`${pageCount} pages, ${linkCount} links, ${imgCount} images, ${locs.length} sitemap urls`);
 if (problems.length) { console.log(`${problems.length} problems:\n- ` + problems.slice(0, 60).join('\n- ')); process.exit(1); }
